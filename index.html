@@ -11,16 +11,17 @@
         input { width: 90%; padding: 15px; margin: 15px 0; border: 2px solid #145c33; border-radius: 10px; font-size: 18px; text-align: center; outline: none; }
         button { background-color: #145c33; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; width: 90%; }
         button:hover { background-color: #0d3d22; }
+        p { color: #666; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2 style="color: #145c33;">صانع تهنئة الأنصار</h2>
-    <p>اكتب اسمك وسيقوم النظام بإضافته للتصميم</p>
-    <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="drawCanvas()">
+    <p>اكتب اسمك في المربع أدناه ثم قم بتحميل الصورة</p>
+    <input type="text" id="nameInput" placeholder="اكتب الاسم هنا..." oninput="drawCanvas()">
     <canvas id="cardCanvas"></canvas>
-    <button onclick="downloadImage()">تحميل الصورة (HD)</button>
+    <button onclick="downloadImage()">تحميل التهنئة (صورة)</button>
 </div>
 
 <script>
@@ -28,42 +29,45 @@
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
-    // تأكد أن اسم الصورة في GitHub هو 0-02.jpg تماماً
+    // تأكد أن الصورة المرفوعة في GitHub تحمل هذا الاسم تماماً
     img.src = '0-02.jpg'; 
 
     img.onload = function() {
+        // تعيين أبعاد الكانفاس لتطابق أبعاد الصورة الحقيقية (1080x1920)
         canvas.width = img.width;
         canvas.height = img.height;
         drawCanvas();
     };
 
     function drawCanvas() {
-        // مسح الكانفاس وإعادة رسم الصورة الأصلية
+        // مسح الكانفاس ورسم الخلفية
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0);
         
         const name = document.getElementById('nameInput').value;
         
-        // حساب حجم الخط ديناميكياً ليناسب دقة 300 DPI (15% من عرض الصورة)
-        const fontSize = canvas.width * 0.15; 
+        // إعدادات الخط: الحجم (8% من عرض الصورة) ليناسب دقة 72 DPI
+        const fontSize = canvas.width * 0.08; 
         
         ctx.fillStyle = "#ffffff"; 
         ctx.font = `bold ${fontSize}px Arial`; 
         ctx.textAlign = "center";
         
-        // إضافة ظل احترافي ليبرز الاسم فوق الخلفية الخضراء
-        ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
-        ctx.shadowBlur = fontSize * 0.1;
-        ctx.shadowOffsetX = 5;
-        ctx.shadowOffsetY = 5;
+        // إضافة ظل ناعم خلف الاسم لزيادة الوضوح
+        ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetX = 4;
+        ctx.shadowOffsetY = 4;
         
-        // وضع الاسم في المنتصف بين "كل عام وأنتم بخير" والشعارات (نسبة 78% من الارتفاع)
+        // وضع الاسم في المنتصف الرأسي بين المخطوطة وشريط الشعارات
+        // تم ضبط الارتفاع ليكون بنسبة 78% من إجمالي طول الصورة
         ctx.fillText(name, canvas.width / 2, canvas.height * 0.78); 
     }
 
     function downloadImage() {
         const link = document.createElement('a');
-        link.download = 'Alansar-Greeting-2026.png';
+        // تسمية الملف المحمل باسم احترافي
+        link.download = 'Al-Ansar-Eid-Greeting.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
     }
