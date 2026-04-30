@@ -4,25 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تهنئة نادي الأنصار</title>
-    <!-- استدعاء خط Somar من الإنترنت -->
+    <!-- استدعاء خط Almarai الاحترافي -->
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* نستخدم Almarai كبديل احترافي جداً لـ Somar ومتاح عالمياً */
         body { font-family: 'Almarai', sans-serif; text-align: center; background-color: #f0f2f0; padding: 20px; margin: 0; }
         .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         canvas { max-width: 100%; height: auto; border-radius: 12px; margin-top: 20px; border: 1px solid #eee; }
         input { width: 90%; padding: 15px; margin: 15px 0; border: 2px solid #145c33; border-radius: 10px; font-size: 18px; text-align: center; outline: none; font-family: 'Almarai', sans-serif; }
         button { background-color: #145c33; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; width: 90%; font-family: 'Almarai', sans-serif; }
         button:hover { background-color: #0d3d22; }
+        p { color: #666; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2 style="color: #145c33;">صانع تهنئة الأنصار</h2>
+    <p>اكتب اسمك في المربع أدناه وسيتغير الخط في التصميم تلقائياً</p>
     <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="drawCanvas()">
     <canvas id="cardCanvas"></canvas>
-    <button onclick="downloadImage()">تحميل التهنئة</button>
+    <button onclick="downloadImage()">تحميل التهنئة (صورة)</button>
 </div>
 
 <script>
@@ -30,13 +31,13 @@
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
-    // التأكد من اسم الصورة المرفوعة في GitHub
+    // تأكد أن اسم الصورة في GitHub هو 0-02.jpg
     img.src = '0-02.jpg'; 
 
     img.onload = function() {
         canvas.width = img.width;
         canvas.height = img.height;
-        // ننتظر قليلاً للتأكد من تحميل الخط قبل الرسم الأول
+        // ننتظر تحميل الخط قبل البدء بالرسم
         document.fonts.ready.then(drawCanvas);
     };
 
@@ -45,16 +46,21 @@
         ctx.drawImage(img, 0, 0);
         
         const name = document.getElementById('nameInput').value;
-        const fontSize = canvas.width * 0.08; 
+        
+        // حجم الخط المصغر (0.065 من عرض الصورة)
+        const fontSize = canvas.width * 0.065; 
         
         ctx.fillStyle = "#ffffff"; 
-        // تطبيق الخط الجديد هنا
         ctx.font = `bold ${fontSize}px 'Almarai', sans-serif`; 
         ctx.textAlign = "center";
         
+        // إعدادات الظل لبروز الاسم
         ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 4;
+        ctx.shadowOffsetY = 4;
         
+        // وضع الاسم في المنتصف (بنسبة 78% من الارتفاع)
         ctx.fillText(name, canvas.width / 2, canvas.height * 0.78); 
     }
 
