@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تهنئة نادي الأنصار</title>
+    <title>نادي الأنصار السعودي - تهنئة العيد</title>
     <!-- استدعاء خط Almarai الاحترافي -->
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -19,8 +19,10 @@
 <body>
 
 <div class="container">
-    <h2 style="color: #145c33;">صانع تهنئة الأنصار</h2>
-    <p>اكتب اسمك في المربع أدناه وسيتغير الخط في التصميم تلقائياً</p>
+    <!-- هنا يمكنك تغيير العنوان الذي يظهر داخل الصفحة -->
+    <h2 style="color: #145c33;">نادي الأنصار السعودي</h2>
+    <p>اكتب اسمك في المربع أدناه للحصول على تهنئتك الخاصة</p>
+    
     <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="drawCanvas()">
     <canvas id="cardCanvas"></canvas>
     <button onclick="downloadImage()">تحميل التهنئة (صورة)</button>
@@ -31,13 +33,12 @@
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
-    // تأكد أن اسم الصورة في GitHub هو 0-02.jpg
+    // التأكد من اسم ملف الصورة في GitHub
     img.src = '0-02.jpg'; 
 
     img.onload = function() {
         canvas.width = img.width;
         canvas.height = img.height;
-        // ننتظر تحميل الخط قبل البدء بالرسم
         document.fonts.ready.then(drawCanvas);
     };
 
@@ -46,21 +47,18 @@
         ctx.drawImage(img, 0, 0);
         
         const name = document.getElementById('nameInput').value;
-        
-        // حجم الخط المصغر (0.065 من عرض الصورة)
         const fontSize = canvas.width * 0.065; 
         
         ctx.fillStyle = "#ffffff"; 
         ctx.font = `bold ${fontSize}px 'Almarai', sans-serif`; 
         ctx.textAlign = "center";
         
-        // إعدادات الظل لبروز الاسم
         ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
         ctx.shadowBlur = 10;
         ctx.shadowOffsetX = 4;
         ctx.shadowOffsetY = 4;
         
-        // وضع الاسم في المنتصف (بنسبة 78% من الارتفاع)
+        // تموضع الاسم (78% من الارتفاع)
         ctx.fillText(name, canvas.width / 2, canvas.height * 0.78); 
     }
 
