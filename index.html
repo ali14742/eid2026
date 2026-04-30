@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تهنئة الأنصار</title>
+    <title>تهنئة نادي الأنصار</title>
     <style>
         body { font-family: 'Arial', sans-serif; text-align: center; background-color: #f0f2f0; padding: 20px; margin: 0; }
         .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
@@ -16,10 +16,11 @@
 <body>
 
 <div class="container">
-    <h2 style="color: #145c33;">صانع التهنئة الخاص بك</h2>
+    <h2 style="color: #145c33;">صانع تهنئة الأنصار</h2>
+    <p>اكتب اسمك وسيقوم النظام بإضافته للتصميم</p>
     <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="drawCanvas()">
     <canvas id="cardCanvas"></canvas>
-    <button onclick="downloadImage()">تحميل التهنئة (صورة)</button>
+    <button onclick="downloadImage()">تحميل الصورة (HD)</button>
 </div>
 
 <script>
@@ -27,6 +28,7 @@
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
+    // تأكد أن اسم الصورة في GitHub هو 0-02.jpg تماماً
     img.src = '0-02.jpg'; 
 
     img.onload = function() {
@@ -36,24 +38,32 @@
     };
 
     function drawCanvas() {
+        // مسح الكانفاس وإعادة رسم الصورة الأصلية
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0);
         
         const name = document.getElementById('nameInput').value;
         
-        ctx.fillStyle = "#ffffff"; 
-        ctx.font = "bold 90px Arial"; // تكبير إضافي بسيط ليناسب المساحة الجديدة
-        ctx.textAlign = "center";
-        ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
-        ctx.shadowBlur = 8;
+        // حساب حجم الخط ديناميكياً ليناسب دقة 300 DPI (15% من عرض الصورة)
+        const fontSize = canvas.width * 0.15; 
         
-        // تم تغيير الرقم هنا ليكون في المنتصف بين المخطوطة والشعارات
-        ctx.fillText(name, canvas.width / 2, canvas.height * 0.75); 
+        ctx.fillStyle = "#ffffff"; 
+        ctx.font = `bold ${fontSize}px Arial`; 
+        ctx.textAlign = "center";
+        
+        // إضافة ظل احترافي ليبرز الاسم فوق الخلفية الخضراء
+        ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
+        ctx.shadowBlur = fontSize * 0.1;
+        ctx.shadowOffsetX = 5;
+        ctx.shadowOffsetY = 5;
+        
+        // وضع الاسم في المنتصف بين "كل عام وأنتم بخير" والشعارات (نسبة 78% من الارتفاع)
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.78); 
     }
 
     function downloadImage() {
         const link = document.createElement('a');
-        link.download = 'Alansar-Greeting.png';
+        link.download = 'Alansar-Greeting-2026.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
     }
