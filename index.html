@@ -27,7 +27,6 @@
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
-    // اسم الصورة الذي حددته
     img.src = '0-02.jpg'; 
 
     img.onload = function() {
@@ -42,13 +41,14 @@
         
         const name = document.getElementById('nameInput').value;
         
-        // إعدادات الخط واللون (أبيض ليتناسب مع الخلفية الخضراء)
         ctx.fillStyle = "#ffffff"; 
-        ctx.font = "bold 45px Arial"; 
+        ctx.font = "bold 90px Arial"; // تكبير إضافي بسيط ليناسب المساحة الجديدة
         ctx.textAlign = "center";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+        ctx.shadowBlur = 8;
         
-        // الإحداثيات أسفل "كل عام وأنتم بخير"
-        ctx.fillText(name, canvas.width / 2, canvas.height * 0.63); 
+        // تم تغيير الرقم هنا ليكون في المنتصف بين المخطوطة والشعارات
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.75); 
     }
 
     function downloadImage() {
