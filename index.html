@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تهنئة الأنصار</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; text-align: center; background-color: #f0f2f0; padding: 20px; margin: 0; }
+        .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        canvas { max-width: 100%; height: auto; border-radius: 12px; margin-top: 20px; border: 1px solid #eee; }
+        input { width: 90%; padding: 15px; margin: 15px 0; border: 2px solid #145c33; border-radius: 10px; font-size: 18px; text-align: center; outline: none; }
+        button { background-color: #145c33; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; width: 90%; }
+        button:hover { background-color: #0d3d22; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="color: #145c33;">صانع التهنئة الخاص بك</h2>
+    <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="drawCanvas()">
+    <canvas id="cardCanvas"></canvas>
+    <button onclick="downloadImage()">تحميل التهنئة (صورة)</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('cardCanvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    // اسم الصورة الذي حددته
+    img.src = '0-02.jpg'; 
+
+    img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        drawCanvas();
+    };
+
+    function drawCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        
+        const name = document.getElementById('nameInput').value;
+        
+        // إعدادات الخط واللون (أبيض ليتناسب مع الخلفية الخضراء)
+        ctx.fillStyle = "#ffffff"; 
+        ctx.font = "bold 45px Arial"; 
+        ctx.textAlign = "center";
+        
+        // الإحداثيات أسفل "كل عام وأنتم بخير"
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.63); 
+    }
+
+    function downloadImage() {
+        const link = document.createElement('a');
+        link.download = 'Alansar-Greeting.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+</script>
+
+</body>
+</html>
