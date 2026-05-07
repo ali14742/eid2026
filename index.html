@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- هذه الأكواد هي المسؤولة عن شكل الرسالة في واتساب وتمنع ظهور github -->
     <title>نادي الأنصار - تهنئة العيد</title>
     <meta name="description" content="اصنع تهنئتك الخاصة من نادي الأنصار">
     <meta property="og:title" content="نادي الأنصار">
     <meta property="og:description" content="التهاني الخاصة">
-    <meta property="og:image" content="0-02.jpg"> <!-- ستظهر الصورة كمعاينة للرابط -->
-    <meta property="og:type" content="website">
+    <meta property="og:image" content="0-02.jpg"> <meta property="og:type" content="website">
 
-    <!-- استدعاء خط Almarai -->
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700&display=swap" rel="stylesheet">
     
     <style>
@@ -22,12 +19,13 @@
         input { width: 90%; padding: 15px; margin: 15px 0; border: 2px solid #145c33; border-radius: 10px; font-size: 18px; text-align: center; outline: none; font-family: 'Almarai', sans-serif; }
         button { background-color: #145c33; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; width: 90%; font-family: 'Almarai', sans-serif; }
         button:hover { background-color: #0d3d22; }
+        p { color: #666; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 style="color: #145c33;">نادي الأنصار </h2>
+    <h2 style="color: #145c33;">نادي الأنصار</h2>
     <p>تهنئة العيد</p>
     
     <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="drawCanvas()">
@@ -66,10 +64,26 @@
     }
 
     function downloadImage() {
-        const link = document.createElement('a');
-        link.download = 'Al-Ansar-Greeting.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        const imageData = canvas.toDataURL('image/png');
+        
+        // فحص ما إذا كان الجهاز يعمل بنظام iOS (آيفون أو آيباد)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        if (isIOS) {
+            // في الآيفون: نفتح الصورة في نافذة جديدة ليتمكن المستخدم من حفظها يدوياً
+            const newWindow = window.open();
+            newWindow.document.write('<div style="text-align:center; background:#f0f2f0; min-height:100vh; padding:20px;">');
+            newWindow.document.write('<h2 style="font-family:sans-serif; color:#145c33;">اضغط مطولاً على الصورة ثم اختر "حفظ في الصور"</h2>');
+            newWindow.document.write('<img src="' + imageData + '" style="width:100%; max-width:400px; border-radius:12px; box-shadow:0 10px 20px rgba(0,0,0,0.2);">');
+            newWindow.document.write('</div>');
+        } else {
+            // في الأندرويد والكمبيوتر: التحميل التلقائي يعمل كالمعتاد
+            const link = document.createElement('a');
+            link.download = 'Al-Ansar-Greeting.png';
+            link.href = imageData;
+            link.click();
+        }
     }
 </script>
 
